@@ -3,9 +3,9 @@ title:
 account: leonardanalytics
 server: shinyapps.io
 appId: 202556
-bundleId: 939266
+bundleId: 939440
 url: https://leonardanalytics.shinyapps.io/seasonalinventoryoptimizer/
-when: 1502643197.45052
+when: 1502655748.82547
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: deploy.R

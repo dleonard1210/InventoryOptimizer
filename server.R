@@ -97,7 +97,7 @@ shinyServer(function(input, output) {
     
   output$pdfPlots <- renderPlot({
             
-    chartcols <- c("maroon","blue3","black")
+    
     
     linewidth = 4
     
@@ -105,9 +105,14 @@ shinyServer(function(input, output) {
     yCP <- parms()$CPPDF
     ySeas <- parms()$SeasPDF
     optInv <- parms()$OptInvLevel
-    transval <- 0.5
-    aucRGB <- col2rgb("gray")/255
+
+    transval <- 0.333
+    aucCol <- "dark gray"
+
+    aucRGB <- col2rgb(aucCol)/255
     aucColor <- rgb(aucRGB[1],aucRGB[2],aucRGB[3], transval)
+    chartcols <- c("maroon","blue3","black", aucColor)
+    
     
     plot(x=x, y=yCP, type = "l", col = chartcols[1], lwd = linewidth,
          xlab = "Demand (Units)",
@@ -130,10 +135,19 @@ shinyServer(function(input, output) {
          pos = 4)
     legend("topright", c("Next Coverage Period",
                          "Remainder of Season",
-                         "Optimal Inventory Level"),
+                         "Optimal Inventory Level",
+                         "Area to be Minimized"),
            col = chartcols,
            cex=1.25,
-           lty = c(1,1,3), lwd = linewidth, bty = "n")
+           lty = c(1,1,3,NA), lwd = linewidth, bty = "n")
+    
+    legend("topright", c("Next Coverage Period",
+                         "Remainder of Season",
+                         "Optimal Inventory Level",
+                         "Area to be Minimized"),
+           col = chartcols,
+           cex=1.25,
+           pch = c(NA, NA, NA, 15), pt.cex = 3, bty = "n")
 
   })
   
