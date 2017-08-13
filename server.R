@@ -101,7 +101,15 @@ shinyServer(function(input, output) {
     
     linewidth = 4
     
-    plot(x=parms()$units, y=parms()$CPPDF, type = "l", col = chartcols[1], lwd = linewidth,
+    x <- parms()$units
+    yCP <- parms()$CPPDF
+    ySeas <- parms()$SeasPDF
+    optInv <- parms()$OptInvLevel
+    transval <- 0.5
+    aucRGB <- col2rgb("gray")/255
+    aucColor <- rgb(aucRGB[1],aucRGB[2],aucRGB[3], transval)
+    
+    plot(x=x, y=yCP, type = "l", col = chartcols[1], lwd = linewidth,
          xlab = "Demand (Units)",
          ylab = "Probability",
          main = "Demand Probability For Next Coverage Period and Remainder of Season",
@@ -109,13 +117,15 @@ shinyServer(function(input, output) {
          cex.axis = 1.25,
          cex.lab = 1.5,
          bty = "n")
-    lines(x=parms()$units, y=parms()$SeasPDF, type = "l", col = chartcols[2], lwd = linewidth)
-    abline(v=parms()$OptInvLevel, col = chartcols[3], lwd = linewidth, lty = 3)
-    text(x=parms()$OptInvLevel, 
-         y = max(parms()$CPPDF)*.5, 
+    lines(x=x, y=ySeas, type = "l", col = chartcols[2], lwd = linewidth)
+    abline(v=optInv, col = chartcols[3], lwd = linewidth, lty = 3)
+    polygon(c( x[x>=optInv], optInv ),  c(yCP[x>=optInv],0 ), col = aucColor)
+    polygon(c( x[x<=optInv], optInv), c(ySeas[x<=optInv],0), col = aucColor)
+    text(x=optInv, 
+         y = max(yCP)*.5, 
          cex =1.5,
          labels = paste("You should stock\n",
-                        formatC(as.integer(parms()$OptInvLevel), digits = 0),
+                        formatC(as.integer(optInv), digits = 0),
                         "units"),
          pos = 4)
     legend("topright", c("Next Coverage Period",
