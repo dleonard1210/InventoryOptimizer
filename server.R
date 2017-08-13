@@ -107,11 +107,14 @@ shinyServer(function(input, output) {
     optInv <- parms()$OptInvLevel
 
     transval <- 0.333
-    aucCol <- "dark gray"
+    aucCPCol <- "maroon"
+    aucSeasCol <- "blue3"
 
-    aucRGB <- col2rgb(aucCol)/255
-    aucColor <- rgb(aucRGB[1],aucRGB[2],aucRGB[3], transval)
-    chartcols <- c("maroon","blue3","black", aucColor)
+    aucCPRGB <- col2rgb(aucCPCol)/255
+    aucSeasRGB <- col2rgb(aucSeasCol)/255
+    aucCPColor <- rgb(aucCPRGB[1],aucCPRGB[2],aucCPRGB[3], transval)
+    aucSeasColor <- rgb(aucSeasRGB[1],aucSeasRGB[2],aucSeasRGB[3], transval)
+    chartcols <- c("maroon","blue3","black", aucCPColor, aucSeasColor)
     
     
     plot(x=x, y=yCP, type = "l", col = chartcols[1], lwd = linewidth,
@@ -124,8 +127,8 @@ shinyServer(function(input, output) {
          bty = "n")
     lines(x=x, y=ySeas, type = "l", col = chartcols[2], lwd = linewidth)
     abline(v=optInv, col = chartcols[3], lwd = linewidth, lty = 3)
-    polygon(c( x[x>=optInv], optInv ),  c(yCP[x>=optInv],0 ), col = aucColor)
-    polygon(c( x[x<=optInv], optInv), c(ySeas[x<=optInv],0), col = aucColor)
+    polygon(c( x[x>=optInv], optInv ),  c(yCP[x>=optInv],0 ), col = aucCPColor)
+    polygon(c( x[x<=optInv], optInv), c(ySeas[x<=optInv],0), col = aucSeasColor)
     text(x=optInv, 
          y = max(yCP)*.5, 
          cex =1.5,
@@ -136,18 +139,20 @@ shinyServer(function(input, output) {
     legend("topright", c("Next Coverage Period",
                          "Remainder of Season",
                          "Optimal Inventory Level",
-                         "Area to be Minimized"),
+                         "Probability of Lost Sales",
+                         "Probability of Stranded Units"),
            col = chartcols,
            cex=1.25,
-           lty = c(1,1,3,NA), lwd = linewidth, bty = "n")
+           lty = c(1,1,3,NA,NA), lwd = linewidth, bty = "n")
     
     legend("topright", c("Next Coverage Period",
                          "Remainder of Season",
                          "Optimal Inventory Level",
-                         "Area to be Minimized"),
+                         "Probability of Lost Sales",
+                         "Probability of Stranded Units"),
            col = chartcols,
            cex=1.25,
-           pch = c(NA, NA, NA, 15), pt.cex = 3, bty = "n")
+           pch = c(NA, NA, NA, 15, 15), pt.cex = 3, bty = "n")
 
   })
   
