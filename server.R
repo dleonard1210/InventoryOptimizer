@@ -10,9 +10,10 @@ library(ggplot2)
 shinyServer(function(input, output) {
     parms <- reactive({
         # Create input list for testing - commented out for production
-        #input <- list(Margin = 60, DailyDemand = 1, Variability = 40,
-        #              SeasWks = 4,
-        #              CPDays = 7)
+        # input <- list(Margin = 60, DailyDemand = 1, Variability = 40,
+        #               SeasWks = 4,
+        #               CPRP = 7,
+        #               CPLT = 2)
         
         itemPrice <- 10
         
@@ -22,7 +23,7 @@ shinyServer(function(input, output) {
         variability <- input$Variability/100
         seaswks <- input$SeasWks
         cpdays <- input$CPRP + input$CPLT
-        #print(cpdays)
+
         output$cpdays <- renderText(paste0("Total coverage period = ",cpdays, " days"))
         
         # Now calculate all of the parameters we need for the gamma distribution functions
